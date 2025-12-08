@@ -40,6 +40,11 @@ class MainActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        // Désactiver la mise à jour automatique du titre par la navigation
+        navController.addOnDestinationChangedListener { _, _, _ ->
+            supportActionBar?.title = "Check'N'Share"
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

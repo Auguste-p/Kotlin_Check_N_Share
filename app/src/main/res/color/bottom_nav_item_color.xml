@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Couleur de l'élément sélectionné -->
+    <item android:color="#e9ab6e" android:state_checked="true" />
+    <!-- Couleur de l'élément non sélectionné (gris) -->
+    <item android:color="#6B7280" />
+</selector>
+

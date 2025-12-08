@@ -1,67 +1,96 @@
 package com.example.checknshare.database
 
-import android.util.Log
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import java.sql.Connection
-import java.sql.DriverManager
-import java.sql.SQLException
+import android.content.Context
+import com.example.checknshare.models.Post
+import com.example.checknshare.ui.notifications.Notification as UINotification
 
-class DatabaseHelper {
+/**
+ * Wrapper pour LocalDatabaseHelper (SQLite)
+ * Permet d'avoir une interface cohérente pour toutes les opérations de base de données
+ */
+class DatabaseHelper(context: Context) {
 
-    companion object {
-        private const val TAG = "DatabaseHelper"
+    private val localHelper = LocalDatabaseHelper(context)
 
-        // Charger le driver JDBC
-        init {
-            try {
-                Class.forName("org.postgresql.Driver")
-            } catch (e: ClassNotFoundException) {
-                Log.e(TAG, "Driver PostgreSQL non trouvé", e)
-            }
-        }
+    // ========== Users ==========
+
+    fun authenticateUser(username: String, password: String): User? {
+        return localHelper.authenticateUser(username, password)
     }
 
-    // Obtenir une connexion à la base de données
-    suspend fun getConnection(): Connection? = withContext(Dispatchers.IO) {
-        try {
-            DriverManager.getConnection(
-                DatabaseConfig.DB_URL,
-                DatabaseConfig.DB_USER,
-                DatabaseConfig.DB_PASSWORD
-            )
-        } catch (e: SQLException) {
-            Log.e(TAG, "Erreur de connexion à la base de données", e)
-            null
-        }
+    fun authenticateUserByEmail(email: String, password: String): User? {
+        return localHelper.authenticateUserByEmail(email, password)
     }
 
-    // Créer la table users si elle n'existe pas
-    suspend fun createUsersTable() = withContext(Dispatchers.IO) {
-        var connection: Connection? = null
-        try {
-            connection = getConnection()
-            connection?.let {
-                val statement = it.createStatement()
-                val createTableSQL = """
-                    CREATE TABLE IF NOT EXISTS users (
-                        id SERIAL PRIMARY KEY,
-                        username VARCHAR(50) UNIQUE NOT NULL,
-                        email VARCHAR(100) UNIQUE NOT NULL,
-                        password VARCHAR(255) NOT NULL,
-                        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                    )
-                """.trimIndent()
+    fun createUser(username: String, email: String, password: String): Boolean {
+        return localHelper.createUser(username, email, password)
+    }
 
-                statement.executeUpdate(createTableSQL)
-                statement.close()
-                Log.d(TAG, "Table users créée ou déjà existante")
-            }
-        } catch (e: SQLException) {
-            Log.e(TAG, "Erreur lors de la création de la table", e)
-        } finally {
-            connection?.close()
-        }
+    fun createUserReturnId(username: String, email: String, password: String): Long {
+        return localHelper.createUserReturnId(username, email, password)
+    }
+
+    fun userExists(username: String): Boolean {
+        return localHelper.userExists(username)
+    }
+
+    fun getAnyUserId(): Int {
+        return localHelper.getAnyUserId()
+    }
+
+    // ========== Posts ==========
+
+    fun getAllPosts(): List<Post> {
+        return localHelper.getAllPosts()
+    }
+
+    fun createPost(userId: Int, imageName: String?, location: String?): Long {
+        return localHelper.createPost(userId, imageName, location)
+    }
+
+    fun deletePost(postId: Int): Int {
+        return localHelper.deletePost(postId)
+    }
+
+    // ========== Likes ==========
+
+    fun getLikeCount(postId: Int): Int {
+        return localHelper.getLikeCount(postId)
+    }
+
+    fun hasUserLiked(postId: Int, userId: Int): Boolean {
+        return localHelper.hasUserLiked(postId, userId)
+    }
+
+    fun addLike(postId: Int, userId: Int): Long {
+        return localHelper.addLike(postId, userId)
+    }
+
+    fun removeLike(postId: Int, userId: Int): Int {
+        return localHelper.removeLike(postId, userId)
+    }
+
+    fun toggleLike(postId: Int, userId: Int): Boolean {
+        return localHelper.toggleLike(postId, userId)
+    }
+
+    // ========== Notifications ==========
+
+    fun getAllNotifications(recipientUserId: Int? = null): List<UINotification> {
+        return localHelper.getAllNotifications(recipientUserId)
+    }
+
+    fun createNotification(
+        recipientUserId: Int,
+        actorName: String,
+        actionText: String,
+        location: String?,
+        profileImageUrl: String?
+    ): Long {
+        return localHelper.createNotification(recipientUserId, actorName, actionText, location, profileImageUrl)
+    }
+
+    fun markNotificationAsRead(notificationId: Int): Int {
+        return localHelper.markNotificationAsRead(notificationId)
     }
 }
-

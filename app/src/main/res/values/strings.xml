@@ -5,4 +5,14 @@
     <string name="title_map">Map</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_profile">Profile</string>
+    <string name="add_post">Ajouter un post</string>
+    <string name="new_post">Nouveau post</string>
+    <string name="post_subtitle">Prenez une photo et ajoutez votre localisation pour partager votre moment</string>
+    <string name="take_photo">Prendre une photo</string>
+    <string name="add_location">Ajouter la localisation</string>
+    <string name="publish">Publier</string>
+    <string name="close">Fermer</string>
+    <string name="location_icon">Location icon</string>
+    <string name="photo_preview">Aperçu de la photo</string>
+    <string name="log_in">Se connecter</string>
 </resources>

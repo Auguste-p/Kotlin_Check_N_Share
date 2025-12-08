@@ -1,13 +1,24 @@
 package com.example.checknshare.ui.notifications
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import com.example.checknshare.database.DatabaseHelper
 
-class NotificationsViewModel : ViewModel() {
+class NotificationsViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val _text = MutableLiveData<String>().apply {
-        value = "This is notifications Fragment"
+    private val dbHelper = DatabaseHelper(application.applicationContext)
+
+    private val _notifications = MutableLiveData<List<Notification>>()
+    val notifications: LiveData<List<Notification>> = _notifications
+
+    init {
+        loadNotifications()
     }
-    val text: LiveData<String> = _text
+
+    fun loadNotifications(recipientUserId: Int? = null) {
+        val list = dbHelper.getAllNotifications(recipientUserId)
+        _notifications.postValue(list)
+    }
 }

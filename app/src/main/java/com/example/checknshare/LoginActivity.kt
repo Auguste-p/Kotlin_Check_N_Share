@@ -4,13 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.checknshare.database.LocalDatabaseHelper
+import com.example.checknshare.database.DatabaseHelper
 import com.example.checknshare.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
-    private lateinit var dbHelper: LocalDatabaseHelper
+    private lateinit var dbHelper: DatabaseHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,34 +18,38 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Initialiser la base de données SQLite
-        dbHelper = LocalDatabaseHelper(this)
+        // Initialiser la base de données Supabase
+        dbHelper = DatabaseHelper(this)
 
         // Cacher l'ActionBar pour une meilleure présentation
         supportActionBar?.hide()
 
         // Bouton de connexion
         binding.btnLogin.setOnClickListener {
-            val username = binding.etUsername.text.toString().trim()
+            val email = binding.etUsername.text.toString().trim()
             val password = binding.etPassword.text.toString().trim()
 
-            if (validateInput(username, password)) {
-                loginUser(username, password)
+            if (validateInput(email, password)) {
+                loginUser(email, password)
             }
         }
 
         // Lien vers l'inscription
         binding.tvSignup.setOnClickListener {
-            Toast.makeText(this, "Fonctionnalité d'inscription à venir", Toast.LENGTH_SHORT).show()
-            // TODO: Implémenter l'activité d'inscription
+            val intent = Intent(this, SignupActivity::class.java)
+            startActivity(intent)
         }
     }
 
 
-    private fun validateInput(username: String, password: String): Boolean {
+    private fun validateInput(email: String, password: String): Boolean {
         return when {
-            username.isEmpty() -> {
-                binding.etUsername.error = "Nom d'utilisateur requis"
+            email.isEmpty() -> {
+                binding.etUsername.error = "Email requis"
+                false
+            }
+            !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
+                binding.etUsername.error = "Email invalide"
                 false
             }
             password.isEmpty() -> {
@@ -60,13 +64,13 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun loginUser(username: String, password: String) {
+    private fun loginUser(email: String, password: String) {
         // Désactiver le bouton pendant le chargement
         binding.btnLogin.isEnabled = false
         binding.btnLogin.text = "Connexion en cours..."
 
         try {
-            val user = dbHelper.authenticateUser(username, password)
+            val user = dbHelper.authenticateUserByEmail(email, password)
 
             if (user != null) {
                 // Connexion réussie
@@ -87,7 +91,7 @@ class LoginActivity : AppCompatActivity() {
                 // Échec de connexion
                 Toast.makeText(
                     this,
-                    "Nom d'utilisateur ou mot de passe incorrect",
+                    "Email ou mot de passe incorrect",
                     Toast.LENGTH_SHORT
                 ).show()
                 binding.btnLogin.isEnabled = true
@@ -113,5 +117,7 @@ class LoginActivity : AppCompatActivity() {
         editor.putBoolean("isLoggedIn", true)
         editor.apply()
     }
+
+
 }
 

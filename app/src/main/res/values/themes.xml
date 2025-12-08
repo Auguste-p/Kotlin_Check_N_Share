@@ -2,15 +2,34 @@
     <!-- Base application theme. -->
     <style name="Theme.CheckNShare" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimary">#5B9AA9</item>
+        <item name="colorPrimaryVariant">#5B9AA9</item>
+        <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorSecondary">#e9ab6e</item>
+        <item name="colorSecondaryVariant">#e9ab6e</item>
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">@color/white</item>
+        <!-- ActionBar style with light background and dark text -->
+        <item name="actionBarStyle">@style/CustomActionBarStyle</item>
         <!-- Customize your theme here. -->
+    </style>
+
+    <!-- Custom ActionBar Style -->
+    <style name="CustomActionBarStyle" parent="Widget.MaterialComponents.ActionBar.Solid">
+        <item name="background">@color/black</item>
+        <item name="titleTextStyle">@style/CustomActionBarTitleText</item>
+    </style>
+
+    <!-- Custom ActionBar Title Text Style -->
+    <style name="CustomActionBarTitleText" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <!-- Style pour les images circulaires -->
+    <style name="CircleImageView">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
     </style>
 </resources>

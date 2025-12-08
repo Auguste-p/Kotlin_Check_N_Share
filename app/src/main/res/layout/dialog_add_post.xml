@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:background="@drawable/dialog_background">
+
+        <!-- Titre -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/new_post"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#1E1E1E"
+            android:gravity="center"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Sous-titre -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/post_subtitle"
+            android:textSize="14sp"
+            android:textColor="#6B7280"
+            android:gravity="center"
+            android:layout_marginBottom="24dp" />
+
+        <!-- Zone photo avec bordure en pointillés -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_marginBottom="20dp">
+
+            <!-- Conteneur avec bordure pointillée pour le bouton -->
+            <LinearLayout
+                android:id="@+id/layout_photo_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center"
+                android:background="@drawable/dashed_border">
+
+                <Button
+                    android:id="@+id/btn_take_photo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/take_photo"
+                    android:textColor="@android:color/white"
+                    android:drawableStart="@drawable/ic_camera"
+                    android:drawablePadding="8dp"
+                    android:paddingStart="24dp"
+                    android:paddingEnd="24dp"
+                    android:paddingTop="12dp"
+                    android:paddingBottom="12dp"
+                    android:backgroundTint="#5B9AA9"
+                    android:textAllCaps="false"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
+            <!-- Prévisualisation de la photo (cachée par défaut) -->
+            <ImageView
+                android:id="@+id/image_preview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:visibility="gone"
+                android:background="@drawable/dashed_border"
+                android:contentDescription="@string/photo_preview" />
+        </FrameLayout>
+
+        <!-- Champ localisation -->
+        <LinearLayout
+            android:id="@+id/layout_location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/location_field_background"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:layout_marginBottom="24dp"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_location"
+                android:layout_marginEnd="12dp"
+                app:tint="#6B7280" />
+
+            <TextView
+                android:id="@+id/text_location"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/add_location"
+                android:textSize="16sp"
+                android:textColor="#6B7280" />
+        </LinearLayout>
+
+        <!-- Bouton Publier -->
+        <Button
+            android:id="@+id/btn_publish"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/publish"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#5B9AA9"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp" />
+
+    </LinearLayout>
+
+    <!-- Bouton fermer (X) -->
+    <ImageButton
+        android:id="@+id/btn_close"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="top|end"
+        android:layout_margin="16dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_close"
+        android:contentDescription="@string/close"
+        app:tint="#6B7280" />
+
+</FrameLayout>
+
